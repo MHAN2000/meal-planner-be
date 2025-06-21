@@ -1,0 +1,57 @@
+# app/.docker-compose.yml
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./app:/app/app"
+      - "./alembic:/app/alembic"
+    environment:
+      # These names will now match the variables in app/config.py
+      DB_SERVER_HOST: ${DB_SERVER_HOST} # Pass DB_SERVER_HOST directly
+      DB_USER: ${DB_USER}               # Pass DB_USER directly
+      DB_PASSWORD: ${DB_PASSWORD}       # Pass DB_PASSWORD directly
+      DB_NAME: ${DB_NAME}               # Pass DB_NAME directly
+      DATABASE_URL: ${DATABASE_URL}     # Pass DATABASE_URL directly
+
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_DB: ${REDIS_DB} # Ensure this is an integer (e.g., 0) in your .env
+      PROJECT_NAME: ${PROJECT_NAME}
+      SECRET_KEY: ${SECRET_KEY}
+
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload # Override CMD for dev
+    depends_on:
+      - db
+      - redis
+    
+  db: # This service is now your MySQL database
+    image: mysql:8.0 # Using MySQL 8.0 image
+    ports:
+      - "3306:3306" # Exposing MySQL's default port (3306)
+    environment:
+      # These environment variables are specific to the MySQL Docker image
+      # and tell it how to set up the database and users.
+      # They will also be pulled from the .env file
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # Essential for MySQL image startup
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    environment:
+      # You can also pass environment variables to Redis if needed (e.g., password)
+      REDIS_DB: ${REDIS_DB} # Example of using a REDIS_DB from .env
+    volumes:
+      - redisdata:/data
+volumes:
+  mysqldata:
+  redisdata:

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+python-jose[cryptography] # For JWTs
+passlib[bcrypt] # For password hashing
+psycopg2-binary # For PostgreSQL connectivity
+sqlalchemy
+alembic
+python-dotenv # For local env vars
+redis # For Redis client
+boto3 # For AWS Bedrock and other AWS services
+pydantic-settings
+PyMySQL
