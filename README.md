@@ -100,10 +100,6 @@ Before you begin, ensure you have the following installed:
     # .env
     # MySQL Database Credentials
     MYSQL_DATABASE=smart_recipe_db
-    MYSQL_USER=mhan
-    MYSQL_PASSWORD=mhan
-    MYSQL_ROOT_PASSWORD=mhan # For MySQL container startup
-
-    # Redis Credentials
-    REDIS_HOST=redis
-    REDIS
+    MYSQL_USER=
+    MYSQL_PASSWORD=
+    MYSQL_ROOT_PASSWORD= # For MySQL container startup
