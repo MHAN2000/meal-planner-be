@@ -4,17 +4,18 @@ from typing import Optional, List
 from datetime import datetime
 
 # Shared properties
-class MealCategoryBase(BaseModel):
+class CategoryBase(BaseModel):
     category: Optional[str] = None
     is_active: Optional[bool] = True
 
-class MealCategoryCreate(MealCategoryBase):
+class CategoryCreate(CategoryBase):
     pass
 
-class MealCategoryUpdate(MealCategoryBase):
+class CategoryUpdate(CategoryBase):
     category: Optional[str] = None
+    is_active: Optional[bool] = None
 
-class MealCategoryInDBBase(MealCategoryBase):
+class CategoryInDBBase(CategoryBase):
     id: Optional[int] = None
     created_at: Optional[datetime]
     updated_at: Optional[datetime]
@@ -23,5 +24,5 @@ class MealCategoryInDBBase(MealCategoryBase):
     class Config:
         from_attributes = True
         
-class MealCategoryResponse(MealCategoryInDBBase):
+class CategoryResponse(CategoryInDBBase):
     pass

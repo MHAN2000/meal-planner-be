@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Union
 
 class Settings(BaseSettings):
+    UPLOADS_DIR: str = "static/uploads"
     PROJECT_NAME: str = "Smart Recipe & Meal Planner API"
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = "default-dev-secret" # Default
@@ -18,6 +19,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "" # This will be constructed or directly read if available
 
     # Redis
+    REDIS_CACHE_EXPIRE_SECONDS: int = 3600
     REDIS_HOST: str = "redis" # Default for local .env if not using docker-compose
     REDIS_PORT: int = 6379
     REDIS_DB: int = 0

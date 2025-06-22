@@ -12,4 +12,5 @@ class Ingredient(Base):
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     recipes = relationship("Recipe", secondary="recipe_ingredients", back_populates="ingredients")
-    ingredients_link = relationship("RecipeIngredient", back_populates="ingredients", primary_join="Ingredient.id == RecipeIngredient.id", foreign_keys="[RecipeIngredient.id]")
+    ingredients_link = relationship("RecipeIngredient", back_populates="ingredient", primaryjoin="Ingredient.id == RecipeIngredient.ingredient_id", foreign_keys="[RecipeIngredient.ingredient_id]")
+    shopping_cart = relationship("ShoppingCart", back_populates="ingredient")

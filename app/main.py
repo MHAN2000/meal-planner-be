@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from .config import settings
-from .routers import meal_category, users
+from .routers import categories, users, recipes
 from app.database.connection import get_db # Ensure this is imported
 
 app = FastAPI(
@@ -12,8 +12,9 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-app.include_router(meal_category.router)
+app.include_router(categories.router)
 app.include_router(users.router)
+app.include_router(recipes.router)
 
 @app.get("/")
 async def read_root():

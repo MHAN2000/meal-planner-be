@@ -9,6 +9,7 @@ services:
     volumes:
       - "./app:/app/app"
       - "./alembic:/app/alembic"
+      - "./static/uploads:/app/static/uploads"
     environment:
       # These names will now match the variables in app/config.py
       DB_SERVER_HOST: ${DB_SERVER_HOST} # Pass DB_SERVER_HOST directly

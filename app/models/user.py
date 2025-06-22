@@ -14,3 +14,5 @@ class User(Base):
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     recipes = relationship("Recipe", back_populates="user")
+    planners = relationship("Planner", back_populates="user")
+    shopping_cart = relationship("ShoppingCart", back_populates="user")

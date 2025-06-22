@@ -25,7 +25,7 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 # JWT functions
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/users/token") # Endpoint for token (login)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login") # Endpoint for token (login)
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     to_encode = data.copy()

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, DateTime, func, ForeignKey
+from sqlalchemy.orm import relationship
 from app.database.connection import Base
 
 class RecipeCategory(Base):

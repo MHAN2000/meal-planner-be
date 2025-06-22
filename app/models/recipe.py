@@ -20,8 +20,12 @@ class Recipe(Base):
     
     # Relationships
     user = relationship("User", back_populates="recipes")
+    planners = relationship("Planner", back_populates="recipe")
     categories = relationship("Category", secondary="recipe_categories", back_populates="recipes")
     recipe_categories_link = relationship(
         "RecipeCategory", back_populates="recipe", primaryjoin="Recipe.id == RecipeCategory.recipe_id", foreign_keys="[RecipeCategory.recipe_id]"
     )
+
+    ingredients = relationship("Ingredient", secondary="recipe_ingredients", back_populates="recipes")
+
     recipe_ingredients_link = relationship("RecipeIngredient", back_populates="recipe", primaryjoin="Recipe.id == RecipeIngredient.recipe_id", foreign_keys="[RecipeIngredient.recipe_id]")
