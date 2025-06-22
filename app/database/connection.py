@@ -5,7 +5,6 @@ from sqlalchemy.orm import sessionmaker
 from app.config import settings
 
 # Create the SQLAlchemy engine
-# connect_args={"check_same_thread": False} is for SQLite; remove for PostgreSQL if not needed.
 engine = create_engine(settings.DATABASE_URL)
 
 # Create a SessionLocal class to get a database session

@@ -3,10 +3,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Union
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Smart Recipe & Meal Planner API" # Now from .env
+    PROJECT_NAME: str = "Smart Recipe & Meal Planner API"
     API_V1_STR: str = "/api/v1"
-    SECRET_KEY: str = "default-dev-secret" # Default if not set in .env
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
+    SECRET_KEY: str = "default-dev-secret" # Default
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     # --- DATABASE SETTINGS FOR MySQL ---
     # These names should match the env vars you're passing to the container

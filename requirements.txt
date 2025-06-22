@@ -9,4 +9,6 @@ python-dotenv # For local env vars
 redis # For Redis client
 boto3 # For AWS Bedrock and other AWS services
 pydantic-settings
+pydantic[email]
 PyMySQL
+python-multipart
