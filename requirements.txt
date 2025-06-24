@@ -12,3 +12,4 @@ pydantic-settings
 pydantic[email]
 PyMySQL
 python-multipart
+fastapi-swagger-dark

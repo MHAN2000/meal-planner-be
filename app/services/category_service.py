@@ -17,10 +17,7 @@ class CategoryService:
         # 1. Try to get data from redis if it exists
         cached_data = redis_client.get("categories")
         if cached_data:
-            print("DEBUG: Cache hit for categories")
             return [Category(**item) for item in json.loads(cached_data)]
-
-        print("DEBUG: Cache miss for categories, fetching from db")
 
         # 2. If it is not in redis, fetch categories from db
         categories = self.get_all_categories_from_db(db)

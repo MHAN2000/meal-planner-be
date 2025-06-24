@@ -1,20 +1,25 @@
 # app/main.py
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from .config import settings
-from .routers import categories, users, recipes
+from .routers import categories, users, recipes, recipe_categories
 from app.database.connection import get_db # Ensure this is imported
+import fastapi_swagger_dark as fsd
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    docs_url="/docs",
-    redoc_url="/redoc"
+    docs_url=None
 )
+
+router = APIRouter()
+fsd.install(router, path="/")
+app.include_router(router)
 
 app.include_router(categories.router)
 app.include_router(users.router)
 app.include_router(recipes.router)
+app.include_router(recipe_categories.router)
 
 @app.get("/")
 async def read_root():

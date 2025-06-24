@@ -10,7 +10,7 @@ from pathlib import Path
 import json
 
 from app.redis_client import redis_client
-from app.schemas.recipe import RecipeResponse, RecipeCreate
+from app.schemas.recipe import RecipeResponse, RecipeCreate, RecipeUpdate
 
 
 class RecipeService:
@@ -30,6 +30,58 @@ class RecipeService:
         redis_client.setex("recipes", settings.REDIS_CACHE_EXPIRE_SECONDS, json.dumps(recipes_response_data))
 
         return recipes
+
+    def destroy(self, db: Session, id: int) -> bool:
+        recipe = db.query(Recipe).get(id)
+        if not recipe:
+            return False
+
+        recipe.deleted_at = func.now()
+
+        db.add(recipe)
+        db.commit()
+        db.refresh(recipe)
+
+        redis_client.delete("recipes")
+
+        return True
+
+    def update_recipe(self, db: Session, db_recipe: Recipe, req: RecipeUpdate, photo_file_bytes: Optional[bytes] = None,
+                      photo_filename: Optional[str] = None) -> Recipe:
+        update_data = req.model_dump(exclude_unset=True)
+        for field, value in update_data.items():
+            setattr(db_recipe, field, value)
+
+        photo_path_for_db = None  # Relative path to store in db
+
+        if photo_file_bytes and photo_filename:
+            # 1. Create the folder if it does not exist
+            upload_dir = Path(settings.UPLOADS_DIR)
+            upload_dir.mkdir(parents=True, exist_ok=True)
+
+            # 2. Generate an unique name for the file
+            file_extension = Path(photo_filename).suffix
+            unique_filename = f"{uuid.uuid4()}{file_extension}"
+
+            # 3. Build the full path in the server
+            file_location = upload_dir / unique_filename
+
+            # 4. Save the file
+            with open(file_location, "wb") as file_obj:
+                file_obj.write(photo_file_bytes)
+
+            # 5. Save the relative path
+            photo_path_for_db = f"/{settings.UPLOADS_DIR}/{unique_filename}"
+
+            db_recipe.photo = photo_path_for_db
+
+        db.add(db_recipe)
+        db.commit()
+        db.refresh(db_recipe)
+
+        redis_client.delete("recipes")
+
+        return db_recipe
 
     def create_recipe(self, db: Session, recipe_in: RecipeCreate, photo_file_bytes: Optional[bytes] = None,
                       photo_filename: Optional[str] = None) -> Recipe:
@@ -70,5 +122,6 @@ class RecipeService:
 
         redis_client.delete("recipes")
         return db_recipe
+
 
 recipe_service = RecipeService()

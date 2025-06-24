@@ -39,7 +39,7 @@ async def destroy(id: int, db: Session = Depends(get_db), current_user: User = D
         raise HTTPException(status_code=404, detail="Category not found")
     return
 
-@router.put('/{id}', response_model=CategoryResponse)
+@router.put('/{id}', response_model=CategoryResponse, status_code=status.HTTP_200_OK)
 async def update(id: int, req: CategoryUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     # Retrieve existing category
     existing_category = db.query(Category).filter(Category.id == id).first()
