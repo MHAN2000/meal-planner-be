@@ -11,7 +11,7 @@ import json
 
 class RecipeCategoryService:
     def get_all_recipe_categories_from_db(self, db: Session) ->List[RecipeCategory]:
-        return db.scalars(select(RecipeCategory).where(RecipeCategory.deleted_at.isnot(None)))
+        return db.scalars(select(RecipeCategory).where(RecipeCategory.deleted_at.is_(None))).all()
 
     def get_all_recipe_categories(self, db: Session) -> List[RecipeCategory]:
         cached_data = redis_client.get("recipe_categories")
@@ -19,7 +19,7 @@ class RecipeCategoryService:
             return [RecipeCategory(**item) for item in json.loads(cached_data)]
 
         recipe_categories = self.get_all_recipe_categories_from_db(db)
-        recipe_categories_response_data = [RecipeCategory.model_validate(c).model_dump(mode='json') for c in recipe_categories]
+        recipe_categories_response_data = [RecipeCategoryResponse.model_validate(c).model_dump(mode='json') for c in recipe_categories]
         redis_client.setex("recipe_categories", settings.REDIS_CACHE_EXPIRE_SECONDS, json.dumps(recipe_categories_response_data))
 
         return recipe_categories
