@@ -10,7 +10,7 @@ class RecipeIngredient(Base):
     recipe_id = Column(Integer, ForeignKey("recipes.id"), nullable=False)
     qty = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), nullable=False, onupdate=func.now())
+    updated_at = Column(DateTime(timezone=True), nullable=True, onupdate=func.now())
     deleted_at = Column(DateTime(timezone=True), nullable=True)
 
     #Relationships

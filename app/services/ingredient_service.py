@@ -18,7 +18,7 @@ class IngredientService:
             return [Ingredient(**item) for item in json.loads(cached_data)]
 
         ingredients = self.get_all_ingredients_from_db(db)
-        ingredients_response_date = [IngredientResponse.model_Validate(c).model_dump(mode='json') for c in ingredients]
+        ingredients_response_date = [IngredientResponse.model_validate(c).model_dump(mode='json') for c in ingredients]
         redis_client.setex("ingredients", settings.REDIS_CACHE_EXPIRE_SECONDS, json.dumps(ingredients_response_date))
 
         return ingredients
