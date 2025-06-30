@@ -11,7 +11,7 @@ from app.schemas.planner import PlannerResponse, PlannerUpdate, PlannerCreate
 
 class PlannerService:
     def get_all_planners_from_db(self, db: Session) -> List[Planner]:
-        return db.scalars(select(Planner).where(Planner.deleted.is_(None))).all()
+        return db.scalars(select(Planner).where(Planner.deleted_at.is_(None))).all()
 
     def get_all_planners(self, db: Session) -> List[Planner]:
         cached_date = redis_client.get("planners")
@@ -24,7 +24,7 @@ class PlannerService:
 
         return planners
 
-    def update(self, db_planner: Planner, req: PlannerUpdate) ->  Planner:
+    def update(self, db: Session, db_planner: Planner, req: PlannerUpdate) ->  Planner:
         update_data = req.model_dump(exclude_unset=True)
         for field, value in update_data.items():
             setattr(db_planner, field, value)

@@ -4,14 +4,15 @@ from datetime import datetime
 
 class PlannerBase(BaseModel):
     recipe_id: Optional[int] = None
-    user_id = Optional[int] = None
+    user_id: Optional[int] = None
     date: Optional[datetime] = None
 
 class PlannerCreate(PlannerBase):
     pass
 
-class PlannerUpdate(PlannerBase):
-    pass
+class PlannerUpdate(BaseModel):
+    recipe_id: Optional[int] = None
+    date: Optional[datetime] = None
 
 class PlannerInDBBase(PlannerBase):
     id: Optional[int] = None
