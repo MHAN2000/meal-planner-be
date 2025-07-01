@@ -44,7 +44,7 @@ async def update(id: int, req: CategoryUpdate, db: Session = Depends(get_db), cu
     # Retrieve existing category
     existing_category = db.query(Category).filter(Category.id == id).first()
     if not existing_category:
-        raise HttpException(status_code=404, detail=f"Category with id {id} not found")
+        raise HTTPException(status_code=404, detail=f"Category with id {id} not found")
 
     updated_category = category_service.update(db, existing_category, req)
 

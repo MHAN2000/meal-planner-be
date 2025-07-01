@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends, HTTPException, status, APIRouter
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 from .config import settings
-from .routers import categories, users, recipes, recipe_categories, ingredients, recipe_ingredients, planners
+from .routers import categories, users, recipes, recipe_categories, ingredients, recipe_ingredients, planners, shopping_cart
 from app.database.connection import get_db # Ensure this is imported
 import fastapi_swagger_dark as fsd
 
@@ -23,6 +23,7 @@ app.include_router(recipe_categories.router)
 app.include_router(ingredients.router)
 app.include_router(recipe_ingredients.router)
 app.include_router(planners.router)
+app.include_router(shopping_cart.router)
 
 @app.get("/")
 async def read_root():
